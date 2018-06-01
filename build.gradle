@@ -18,6 +18,12 @@ group 'de.ite.dus'
 version '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+bootJar {
+    baseName = 'gs-accessing-data-mongodb'
+    version =  '0.1.0'
+}
+
+
 repositories {
     mavenCentral()
 }
@@ -25,7 +31,7 @@ repositories {
 
 dependencies {
     compile('org.projectlombok:lombok:1.16.20')
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile('org.springframework.kafka:spring-kafka:2.1.5.RELEASE')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
