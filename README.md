@@ -1,14 +1,13 @@
 # pfc-power-persistor
+The pfc-power-peristor can be used to consume a Json posted to a Kafka topic and persists it into a Mongo  db.
 
-Consumer
+## Run it
+You can ran the application with executing the main of `PfcPowerPersistorApplication`. By default, it will run on `localhost:8082`.
 
-As default the kafka consumer tries to connect to a topic "pfc-power-import"
+## Kafka Consumes
+The persistor consumes a JSON string posted into a Kafka topic. By default, this topic is `pfc-power-import`.
 
-The consumer runs on port 8082 by default
+## Run Mongo with Docker
 
-Run Mongo with Docker
-
-Run:   docker-compose -f stack.yml up
-Stop:  docker-compose -f stack.yml down
-
-It comes with Mongo-Express so you can view the mongo db via http://localhost:8181/
+To run the Mongo db with Docker use the following
+`docker-compose up --build` 
