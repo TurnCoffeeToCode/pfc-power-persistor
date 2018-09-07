@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  mongo:
+    image: mongo:3
+    container_name: pfc-power-db
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./data/db:/data/db
