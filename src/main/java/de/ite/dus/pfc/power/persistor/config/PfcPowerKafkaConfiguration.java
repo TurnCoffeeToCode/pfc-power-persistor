@@ -1,23 +1,19 @@
 package de.ite.dus.pfc.power.persistor.config;
 
 import de.ite.dus.pfc.power.persistor.consumer.PfcConsumer;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
-import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.KafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableKafka
 public class PfcPowerKafkaConfiguration {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -28,6 +24,9 @@ public class PfcPowerKafkaConfiguration {
 
     @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
+
+    @Value("${kafka.topic.pfc.power.import}")
+    private String topics;
 
     @Bean
     public Map<String, Object> consumerConfigs() {
@@ -42,15 +41,11 @@ public class PfcPowerKafkaConfiguration {
     }
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerConfigs());
-    }
-
-    @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
+    public Consumer<String, String> consumerFactory() {
+        Map<String, Object> configs = consumerConfigs();
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(configs);
+        consumer.subscribe(Arrays.asList(topics));
+        return consumer;
     }
 
     @Bean
